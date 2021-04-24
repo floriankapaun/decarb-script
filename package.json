@@ -7,11 +7,15 @@
   "author": "Florian Kapaun <hello@florian-kapaun.de>",
   "license": "MIT",
   "scripts": {
-    "prod": "./node_modules/.bin/babel src --out-dir dist"
+    "compile": "./node_modules/.bin/babel src --out-dir dist",
+    "uglify": "uglifyjs dist/script.js --mangle --compress -o dist/script.js",
+    "prod": "yarn compile && yarn uglify",
+    "build": "yarn prod"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
     "@babel/core": "^7.13.16",
-    "@babel/preset-env": "^7.13.15"
+    "@babel/preset-env": "^7.13.15",
+    "uglifyjs": "^2.4.11"
   }
 }
