@@ -40,12 +40,7 @@ const createCustomEvent = (name) => {
         // Create Event
         let e;
         // Cross Browser Support
-        if (typeof Event === 'function') {
-            e = new Event(name);
-        } else {
-            e = document.createEvent('Event');
-            e.initEvent(name, false, false);
-        }
+        e = new Event(name);
         e.arguments = arguments;
         window.dispatchEvent(e);
         return r;

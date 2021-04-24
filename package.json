@@ -1,0 +1,17 @@
+{
+  "name": "eco-web-script",
+  "version": "1.0.0",
+  "description": "Client script for Eco Web",
+  "main": "script.js",
+  "repository": "https://github.com/floriankapaun/eco-web-script.git",
+  "author": "Florian Kapaun <hello@florian-kapaun.de>",
+  "license": "MIT",
+  "scripts": {
+    "prod": "./node_modules/.bin/babel src --out-dir dist"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15"
+  }
+}
