@@ -3,6 +3,7 @@
 // TODO: How are those requests authenticated? Check Google Analytics
 // OPTIMIZE: Some used properties have really bad browser support, some less bad (fetch). They should get compiled to higher suppor.
 // The optional chaining operator '?.' isn't working on older browsers as well
+// TODO: Remove async and await after debugging
 
 const API_URL = 'http://localhost:4000/api/v1/pageviews';
 
