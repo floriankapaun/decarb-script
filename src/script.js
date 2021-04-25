@@ -14,7 +14,7 @@ const pageView = async () => {
     const data = {
         p: window.location.href,
         w: window.screen.width,
-        
+        h: window.screen.height,
         c: window.navigator.connection?.effectiveType,
     };
     const response = await fetch(API_URL, {
