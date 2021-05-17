@@ -5,7 +5,7 @@
 // The optional chaining operator '?.' isn't working on older browsers as well
 // TODO: Remove async and await after debugging
 
-const API_URL = 'http://localhost:4000/api/v1/pageviews';
+const API_URL = 'https://ew-stage.kapaun.uber.space/api/v1/pageviews';
 
 /**
  * This function has to be fired on pageload, popState, replaceState and pushState
