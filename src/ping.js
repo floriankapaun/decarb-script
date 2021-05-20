@@ -6,22 +6,34 @@
 
 // OPTIMIZE: Add session duration recording
 
+// Config values
 const API_URL = 'https://ew-stage.kapaun.uber.space/api/v1/pageviews';
 const KEY = '_EcoWeb';
 
+// Minimal Versions of often used Variables
+const w = window;
+const h = w.history;
+const a = w.addEventListener;
+const ps = 'pushState';
+const rs = 'replaceState';
+
+
 /**
- * This function has to be fired on pageload, popState, replaceState and pushState
+ * Sends data about current pageView to given API_URL and sets a localStorage item
+ * to identify repeated views.
+ * 
+ * Has to be fired on pageload, popState, replaceState and pushState
  */
 const recordPageView = () => {
     const data = {
         // Page URL
-        p: window.location.href,
+        p: w.location.href,
         // Window width
-        w: window.screen.width,
+        w: w.screen.width,
         // Window height
-        h: window.screen.height,
+        h: w.screen.height,
         // Effective connection Type
-        c: window.navigator.connection?.effectiveType,
+        c: w.navigator.connection?.effectiveType,
         // First-Time visit?
         f: !(localStorage[KEY])
     };
@@ -37,45 +49,40 @@ const recordPageView = () => {
     localStorage[KEY] = true
 };
 
-// Function to create custom events
-// Needed to listen for pushState and replaceState
-// Reference: https://stackoverflow.com/a/25673911
-// Reference: https://stackoverflow.com/a/4585031
+
+/**
+ * Create Custom Events
+ * Utilized to listen for 'pushState' and 'replaceState'
+ * 
+ * Reference: https://stackoverflow.com/a/25673911
+ * Reference: https://stackoverflow.com/a/4585031
+ * 
+ * @param {String} name - Event Name
+ * @returns {Function}
+ */
 const createCustomEvent = (name) => {
-    const origin = window.history[name];
+    const origin = h[name];
     return function()  {
         const r = origin.apply(this, arguments);
         // Create Event
         let e;
-        // Cross Browser Support
         e = new Event(name);
         e.arguments = arguments;
-        window.dispatchEvent(e);
+        w.dispatchEvent(e);
         return r;
     };
 };
 
-// Create pushState and replaceState Events on window.history
-window.history.pushState = createCustomEvent('pushState');
-window.history.replaceState = createCustomEvent('replaceState');
+// Add 'pushState' and 'replaceState' Events to window.history
+h[ps] = createCustomEvent(ps);
+h[rs] = createCustomEvent(rs);
 
-// Record pushState Events
-window.addEventListener('pushState', recordPageView);
-
-// Record replaceState Events
-window.addEventListener('replaceState', recordPageView);
+// Setup EventListeners to record 'pushState' and 'replaceState' Events
+a(ps, recordPageView);
+a(rs, recordPageView);
 
 // Record popstate Events
-window.onpopstate = () => recordPageView();
+w.onpopstate = () => recordPageView();
 
 // Record initial pageView
 recordPageView();
-
-// window.history[ps] = _pushState(ps)
-
-// window['addEventListener'](ps, () => {
-//     pageview()
-// })
-// window['addEventListener']('popstate', () => {
-//     pageview()
-// })
