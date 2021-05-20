@@ -1,33 +1,40 @@
-// TODO: Add hasCache();
-// OPTIMIZE: Add sessionDuration();
-// TODO: How are those requests authenticated? Check Google Analytics
-// OPTIMIZE: Some used properties have really bad browser support, some less bad (fetch). They should get compiled to higher suppor.
-// The optional chaining operator '?.' isn't working on older browsers as well
-// TODO: Remove async and await after debugging
+/**
+ * Eco Web Client Script
+ * 
+ * @author Florian Kapaun <hello@florian-kapaun.de>
+ */
+
+// OPTIMIZE: Add session duration recording
 
 const API_URL = 'https://ew-stage.kapaun.uber.space/api/v1/pageviews';
+const KEY = '_EcoWeb';
 
 /**
  * This function has to be fired on pageload, popState, replaceState and pushState
  */
-const pageView = async () => {
+const recordPageView = () => {
     const data = {
+        // Page URL
         p: window.location.href,
+        // Window width
         w: window.screen.width,
+        // Window height
         h: window.screen.height,
+        // Effective connection Type
         c: window.navigator.connection?.effectiveType,
+        // First-Time visit?
+        f: !(localStorage[KEY])
     };
-    const response = await fetch(API_URL, {
+    // Send the Data to the API
+    fetch(API_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
     })
-        // Only needed for debugging – not in production
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error(error));
+    // Store something in localStorage to identify repeated views
+    localStorage[KEY] = true
 };
 
 // Function to create custom events
@@ -52,17 +59,17 @@ const createCustomEvent = (name) => {
 window.history.pushState = createCustomEvent('pushState');
 window.history.replaceState = createCustomEvent('replaceState');
 
-// Track pushState Events
-window.addEventListener('pushState', pageView);
+// Record pushState Events
+window.addEventListener('pushState', recordPageView);
 
-// Track replaceState Events
-window.addEventListener('replaceState', pageView);
+// Record replaceState Events
+window.addEventListener('replaceState', recordPageView);
 
-// Track popstate Events
-window.onpopstate = () => pageView();
+// Record popstate Events
+window.onpopstate = () => recordPageView();
 
-// Track initial pageView
-pageView();
+// Record initial pageView
+recordPageView();
 
 // window.history[ps] = _pushState(ps)
 
