@@ -41,9 +41,12 @@ const recordPageView = () => {
     fetch(API_URL, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            // Sending data as urlencoded to comply with the Fetch
+            // specification of "simple requests" and prevent a Preflight
+            // See: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#simple_requests
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(data),
+        body: new URLSearchParams(data),
     })
     // Store something in localStorage to identify repeated views
     localStorage[KEY] = true
