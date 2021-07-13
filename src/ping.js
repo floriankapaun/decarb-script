@@ -4,8 +4,6 @@
  * @author Florian Kapaun <florian@decarb.website>
  */
 
-// OPTIMIZE: Add session duration recording
-
 // Config values
 const API_URL = 'https://stage.decarb.website/api/v1/pageviews';
 const KEY = '_decarb';
