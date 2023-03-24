@@ -1,3 +1,3 @@
-# eco-web-script
+# decarb-script
 
-Client script for Eco Web
+Client script for my bachelor-thesis project [`decarb`](https://github.com/floriankapaun/decarb).
